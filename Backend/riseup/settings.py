@@ -29,8 +29,11 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 SECRET_KEY = 'django-insecure-p=4%n$c&-mzp6k)2$=#0ug16-=e)e2$g2efysdy1$7n@0g@wko'
 
 
-DEBUG = True
-ALLOWED_HOSTS = ["*"]  # devda hamma joydan ruxsat beramiz
+DEBUG = False
+ALLOWED_HOSTS = [
+    "api.riseuply.uz",
+    ".railway.app"
+]  
 
 # ==========================================================
 #  DJANGO APPS
@@ -146,11 +149,16 @@ REST_FRAMEWORK = {
 # ==========================================================
 #  CORS (Frontend bilan aloqa uchun)
 # ==========================================================
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "https://riseuply.vercel.app",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://riseuply.vercel.app",
+]
+
 
 # yoki xavfsiz variant (agar front 5500 portda ishlasa)
 # CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5500"]
