@@ -248,22 +248,12 @@ class LessonProgressSerializer(serializers.ModelSerializer):
         return obj
     
 
+
 class AdminUserSerializer(serializers.ModelSerializer):
     telegram_linked = serializers.SerializerMethodField()
     tasks_count = serializers.IntegerField(read_only=True)
-
     total_points = serializers.IntegerField(
-        source='stats.total_points',
-        read_only=True,
-        default=0
-    )
-    correct_answers = serializers.IntegerField(
-        source='stats.correct_answers',
-        read_only=True,
-        default=0
-    )
-    wrong_answers = serializers.IntegerField(
-        source='stats.wrong_answers',
+        source="stats.total_points",
         read_only=True,
         default=0
     )
@@ -271,18 +261,16 @@ class AdminUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id',
-            'username',
-            'email',
-            'is_staff',
-            'telegram_linked',
-            'total_points',
-            'correct_answers',
-            'wrong_answers',
-            'tasks_count',
-            'date_joined',
-            'last_login',
+            "id",
+            "username",
+            "email",
+            "is_staff",
+            "telegram_linked",
+            "total_points",
+            "tasks_count",
+            "date_joined",
+            "last_login",
         )
 
     def get_telegram_linked(self, obj):
-        return bool(getattr(obj.profile, 'telegram_id', None))
+        return bool(getattr(obj.profile, "telegram_id", None))

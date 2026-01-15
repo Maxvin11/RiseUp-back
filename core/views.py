@@ -184,7 +184,7 @@ def stats(request):
 
     user_tasks = Task.objects.filter(user=user)
     total_tasks = user_tasks.count()
-
+    
     tasks_data = {
         "total": total_tasks,
         "by_type": list(user_tasks.values("type").annotate(count=Count("id")).order_by("-count")) if total_tasks else [],
@@ -779,3 +779,27 @@ def admin_lesson_detail(request, pk):
 
     lesson.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@permission_classes([IsSuperUser])
+def admin_users(request):
+    users = User.objects.all().order_by('-date_joined')
+
+    data = []
+    for u in users:
+        profile = getattr(u, "profile", None)
+        stats = getattr(u, "stats", None)
+        data.append({
+            "id": u.id,
+            "username": u.username,
+            "email": u.email,
+            "is_staff": u.is_staff,
+            "telegram_linked": bool(profile and profile.telegram_id),
+            "tasks_count": u.task_set.count(),
+            "total_points": stats.total_points if stats else 0,
+            "created_at": u.date_joined,
+            "last_login": u.last_login,
+        })
+
+    return Response(data)
